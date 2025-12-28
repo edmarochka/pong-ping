@@ -3,7 +3,7 @@ import socket
 import json
 from threading import Thread
 
-# ---ПУГАМЕ НАЛАШТУВАННЯ ---
+# hi hello hi!!
 WIDTH, HEIGHT = 800, 600
 init()
 screen = display.set_mode((WIDTH, HEIGHT))
@@ -14,7 +14,7 @@ def connect_to_server():
     while True:
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect(('localhost', 8080)) # ---- Підключення до сервера
+            client.connect(('192.168.0.118', 8080)) # ---- Підключення до сервера
             buffer = ""
             game_state = {}
             my_id = int(client.recv(24).decode())
