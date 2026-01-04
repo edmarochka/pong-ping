@@ -38,33 +38,40 @@ def receive():
             break
 
 # --- ШРИФТИ ---
-font_win = font.Font(None, 72)
-font_main = font.Font(None, 36)
+font_win = font.Font("Mulish-VariableFont_wght.ttf", 72)
+font_main = font.Font("RobotoMono-VariableFont_wght.ttf", 36)
 # --- ЗОБРАЖЕННЯ ----
-
+background = transform.scale(image.load('back.png'),(WIDTH,HEIGHT))
+startbackground = transform.scale(image.load('bg_1_1.png'),(WIDTH,HEIGHT))
+endbackground = transform.scale(image.load('Starset.png'),(WIDTH,HEIGHT))
 # --- ЗВУКИ ---
-
+mixer.init()
+mixer.music.load("game.ogg")
+mixer.music.play(-1)
+kick = mixer.Sound('collision.wav')
 # --- ГРА ---
 game_over = False
 winner = None
 you_winner = None
 my_id, game_state, buffer, client = connect_to_server()
 Thread(target=receive, daemon=True).start()
+
 while True:
     for e in event.get():
         if e.type == QUIT:
             exit()
 
     if "countdown" in game_state and game_state["countdown"] > 0:
-        screen.fill((0, 0, 0))
+       # screen.fill((0, 0, 0))
+        screen.blit(startbackground,(0,0))
         countdown_text = font.Font(None, 72).render(str(game_state["countdown"]), True, (255, 255, 255))
         screen.blit(countdown_text, (WIDTH // 2 - 20, HEIGHT // 2 - 30))
         display.update()
         continue  # Не малюємо гру до завершення відліку
 
     if "winner" in game_state and game_state["winner"] is not None:
-        screen.fill((20, 20, 20))
-
+       # screen.fill((20, 20, 20))
+        screen.blit(endbackground,(0,0))
         if you_winner is None:  # Встановлюємо тільки один раз
             if game_state["winner"] == my_id:
                 you_winner = True
@@ -88,7 +95,8 @@ while True:
         continue  # Блокує гру після перемоги
 
     if game_state:
-        screen.fill((30, 30, 30))
+        # screen.fill((30, 30, 30))
+        screen.blit(background,(0,0))
         draw.rect(screen, (0, 255, 0), (20, game_state['paddles']['0'], 20, 100))
         draw.rect(screen, (255, 0, 255), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
@@ -101,6 +109,7 @@ while True:
                 pass
             if game_state['sound_event'] == 'platform_hit':
                 # звук відбиття м'ячика від платформи
+                kick.play
                 pass
 
     else:
