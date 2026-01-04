@@ -14,7 +14,7 @@ def connect_to_server():
     while True:
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect(('192.168.0.118', 8080)) # ---- Підключення до сервера
+            client.connect(('localhost', 8080)) # ---- Підключення до сервера
             buffer = ""
             game_state = {}
             my_id = int(client.recv(24).decode())
@@ -38,7 +38,7 @@ def receive():
             break
 
 # --- ШРИФТИ ---
-font_win = font.Font("Mulish-VariableFont_wght.ttf", 72)
+font_win = font.Font("Mulish-VariableFont_wght.ttf", 50)
 font_main = font.Font("RobotoMono-VariableFont_wght.ttf", 36)
 # --- ЗОБРАЖЕННЯ ----
 background = transform.scale(image.load('back.png'),(WIDTH,HEIGHT))
